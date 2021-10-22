@@ -155,6 +155,7 @@ namespace Launchpad.Launcher.Interface
 			}
 			else
 			{
+				// HERE WE PUT THE LOGIN SCREEN
 				LoadBanner();
 
 				LoadChangelog();
@@ -683,6 +684,14 @@ namespace Launchpad.Launcher.Interface
 					this.Game.ReinstallGame();
 				}
 			}
+		}
+
+		private void OnLoginButtonClicked(object sender, EventArgs e)
+		{
+		}
+
+		private void OnLoginExitButtonClicked(object sender, EventArgs e)
+		{
 		}
 	}
 }

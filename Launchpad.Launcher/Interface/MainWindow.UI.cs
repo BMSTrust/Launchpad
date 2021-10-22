@@ -54,6 +54,11 @@ namespace Launchpad.Launcher.Interface
 		[UIElement] private readonly ProgressBar MainProgressBar;
 		[UIElement] private readonly Button MainButton;
 
+		[UIElement] private readonly Button LoginButton;
+		[UIElement] private readonly Button LoginExitButton;
+		[UIElement] private readonly Button LoginUser;
+		[UIElement] private readonly Button LoginPassword;
+
 		/// <summary>
 		/// Creates a new instance of the <see cref="MainWindow"/> class, loading its interface definition from file.
 		/// </summary>
@@ -82,6 +87,9 @@ namespace Launchpad.Launcher.Interface
 			this.MenuAboutItem.Activated += OnMenuAboutItemActivated;
 
 			this.MainButton.Clicked += OnMainButtonClicked;
+
+			this.LoginButton.Clicked += OnLoginButtonClicked;
+			this.LoginExitButton.Clicked += OnLoginExitButtonClicked;
 		}
 
 		/// <summary>
@@ -98,6 +106,17 @@ namespace Launchpad.Launcher.Interface
 					dialog.Icon = ResourceManager.ApplicationIcon;
 					dialog.Logo = ResourceManager.ApplicationIcon;
 					dialog.Run();
+				}
+			}
+		}
+
+		private void ActivateLoginMenu(object sender, EventArgs e)
+		{
+			using (var builder = new Builder(Assembly.GetExecutingAssembly(), "Launchpad.Launcher.Interface.Launchpad.glade", null))
+			{
+				using (var login = new MessageDialog(builder.GetObject("MainLogin").Handle))
+				{
+					login.Run();
 				}
 			}
 		}
