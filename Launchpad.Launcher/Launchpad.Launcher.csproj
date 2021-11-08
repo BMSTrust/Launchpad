@@ -63,6 +63,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Launchpad.Common\Launchpad.Common.csproj" />
   </ItemGroup>
 

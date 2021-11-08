@@ -54,10 +54,14 @@ namespace Launchpad.Launcher.Interface
 		[UIElement] private readonly ProgressBar MainProgressBar;
 		[UIElement] private readonly Button MainButton;
 
+		[UIElement] private Dialog LoginDialog;
+
+		/*
 		[UIElement] private readonly Button LoginButton;
 		[UIElement] private readonly Button LoginExitButton;
 		[UIElement] private readonly Button LoginUser;
 		[UIElement] private readonly Button LoginPassword;
+		*/
 
 		/// <summary>
 		/// Creates a new instance of the <see cref="MainWindow"/> class, loading its interface definition from file.
@@ -87,9 +91,6 @@ namespace Launchpad.Launcher.Interface
 			this.MenuAboutItem.Activated += OnMenuAboutItemActivated;
 
 			this.MainButton.Clicked += OnMainButtonClicked;
-
-			this.LoginButton.Clicked += OnLoginButtonClicked;
-			this.LoginExitButton.Clicked += OnLoginExitButtonClicked;
 		}
 
 		/// <summary>
@@ -110,15 +111,30 @@ namespace Launchpad.Launcher.Interface
 			}
 		}
 
-		private void ActivateLoginMenu(object sender, EventArgs e)
+		private void CreateLogin()
 		{
 			using (var builder = new Builder(Assembly.GetExecutingAssembly(), "Launchpad.Launcher.Interface.Launchpad.glade", null))
 			{
-				using (var login = new MessageDialog(builder.GetObject("MainLogin").Handle))
+				using (this.LoginDialog = new Gtk.AboutDialog(builder.GetObject("LoginDialog").Handle))
 				{
-					login.Run();
+					var loginButton = (Gtk.Button)builder.GetObject("Login");
+					loginButton.Clicked += OnLoginButtonClickedLogin;
+					this.LoginDialog.Destroyed += OnExitButtonClickedLogin;
+					this.LoginDialog.Run();
 				}
 			}
+		}
+
+		private void OnExitButtonClickedLogin(object sender, EventArgs e)
+		{
+			Application.Quit();
+		}
+
+		private void OnLoginButtonClickedLogin(object sender, EventArgs e)
+		{
+			// MANEJAR HTTP POST A LOGIN ACA
+			this.LoginDialog.Destroyed -= OnExitButtonClickedLogin;
+			this.LoginDialog.Hide();
 		}
 
 		/// <summary>

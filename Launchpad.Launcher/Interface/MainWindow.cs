@@ -120,8 +120,8 @@ namespace Launchpad.Launcher.Interface
 			SetLauncherMode(ELauncherMode.Inactive, false);
 
 			// Set the window title
-			this.Title = LocalizationCatalog.GetString("Launchpad - {0}", this.Configuration.GameName);
-			this.StatusLabel.Text = LocalizationCatalog.GetString("Idle");
+			this.Title = LocalizationCatalog.GetString("Launcher- {0}", this.Configuration.GameName);
+			this.StatusLabel.Text = LocalizationCatalog.GetString("En espera");
 		}
 
 		/// <summary>
@@ -144,18 +144,19 @@ namespace Launchpad.Launcher.Interface
 					DialogFlags.Modal,
 					MessageType.Warning,
 					ButtonsType.Ok,
-					LocalizationCatalog.GetString("Failed to connect to the patch server. Please check your settings.")
+					LocalizationCatalog.GetString("Error al conectar con el servidor. Contacte al administrador.")
 				))
 				{
 					dialog.Run();
 				}
 
-				this.StatusLabel.Text = LocalizationCatalog.GetString("Could not connect to server.");
+				this.StatusLabel.Text = LocalizationCatalog.GetString("No se pudo conectar al server.");
 				this.MenuRepairItem.Sensitive = false;
 			}
 			else
 			{
 				// HERE WE PUT THE LOGIN SCREEN
+				CreateLogin();
 				LoadBanner();
 
 				LoadChangelog();
@@ -173,8 +174,8 @@ namespace Launchpad.Launcher.Interface
 					{
 						Log.Info
 						(
-							$"The server does not provide files for platform \"{PlatformHelpers.GetCurrentPlatform()}\". " +
-							"A .provides file must be present in the platforms' root directory."
+							$"El servidor aún no soporta la plataforma \"{PlatformHelpers.GetCurrentPlatform()}\". " +
+							". No .provides file"
 						);
 
 						SetLauncherMode(ELauncherMode.Inactive, false);
@@ -246,8 +247,8 @@ namespace Launchpad.Launcher.Interface
 
 			var text = LocalizationCatalog.GetString
 			(
-				"This appears to be the first time you're starting the launcher.\n" +
-				"Is this the location where you would like to install the game?"
+				"Has iniciado el launcher por primera vez.\n" +
+				"Es esta la ubicacion donde quieres instalar el juego?"
 			) + $"\n\n{DirectoryHelpers.GetLocalLauncherDirectory()}";
 
 			using (var shouldInstallHereDialog = new MessageDialog
@@ -334,12 +335,12 @@ namespace Launchpad.Launcher.Interface
 					if (isInProgress)
 					{
 						this.MainButton.Sensitive = false;
-						this.MainButton.Label = LocalizationCatalog.GetString("Installing...");
+						this.MainButton.Label = LocalizationCatalog.GetString("Instalando...");
 					}
 					else
 					{
 						this.MainButton.Sensitive = true;
-						this.MainButton.Label = LocalizationCatalog.GetString("Install");
+						this.MainButton.Label = LocalizationCatalog.GetString("Instalar");
 					}
 					break;
 				}
@@ -348,12 +349,12 @@ namespace Launchpad.Launcher.Interface
 					if (isInProgress)
 					{
 						this.MainButton.Sensitive = false;
-						this.MainButton.Label = LocalizationCatalog.GetString("Updating...");
+						this.MainButton.Label = LocalizationCatalog.GetString("Actualizando...");
 					}
 					else
 					{
 						this.MainButton.Sensitive = true;
-						this.MainButton.Label = LocalizationCatalog.GetString("Update");
+						this.MainButton.Label = LocalizationCatalog.GetString("Actualizar");
 					}
 					break;
 				}
@@ -362,12 +363,12 @@ namespace Launchpad.Launcher.Interface
 					if (isInProgress)
 					{
 						this.MainButton.Sensitive = false;
-						this.MainButton.Label = LocalizationCatalog.GetString("Repairing...");
+						this.MainButton.Label = LocalizationCatalog.GetString("Reparando...");
 					}
 					else
 					{
 						this.MainButton.Sensitive = true;
-						this.MainButton.Label = LocalizationCatalog.GetString("Repair");
+						this.MainButton.Label = LocalizationCatalog.GetString("Reparar");
 					}
 					break;
 				}
@@ -376,12 +377,12 @@ namespace Launchpad.Launcher.Interface
 					if (isInProgress)
 					{
 						this.MainButton.Sensitive = false;
-						this.MainButton.Label = LocalizationCatalog.GetString("Launching...");
+						this.MainButton.Label = LocalizationCatalog.GetString("Lanzando ADN Clip...");
 					}
 					else
 					{
 						this.MainButton.Sensitive = true;
-						this.MainButton.Label = LocalizationCatalog.GetString("Launch");
+						this.MainButton.Label = LocalizationCatalog.GetString("Comenzar");
 					}
 					break;
 				}
@@ -390,7 +391,7 @@ namespace Launchpad.Launcher.Interface
 					this.MenuRepairItem.Sensitive = false;
 
 					this.MainButton.Sensitive = false;
-					this.MainButton.Label = LocalizationCatalog.GetString("Inactive");
+					this.MainButton.Label = LocalizationCatalog.GetString("Inactivo");
 					break;
 				}
 				default:
@@ -436,7 +437,7 @@ namespace Launchpad.Launcher.Interface
 			if (!this.Checks.IsPlatformAvailable(this.Configuration.SystemTarget))
 			{
 				this.StatusLabel.Text =
-					LocalizationCatalog.GetString("The server does not provide the game for the selected platform.");
+					LocalizationCatalog.GetString("ADN Clip no soporta la plataforma actual.");
 				this.MainProgressBar.Text = string.Empty;
 
 				Log.Info
@@ -488,7 +489,7 @@ namespace Launchpad.Launcher.Interface
 				}
 				case ELauncherMode.Launch:
 				{
-					this.StatusLabel.Text = LocalizationCatalog.GetString("Idle");
+					this.StatusLabel.Text = LocalizationCatalog.GetString("En espera");
 					this.MainProgressBar.Text = string.Empty;
 
 					SetLauncherMode(ELauncherMode.Launch, true);
@@ -527,7 +528,7 @@ namespace Launchpad.Launcher.Interface
 		{
 			Application.Invoke((o, args) =>
 			{
-				this.StatusLabel.Text = LocalizationCatalog.GetString("The game failed to launch. Try repairing the installation.");
+				this.StatusLabel.Text = LocalizationCatalog.GetString("El juego falló al comenzar. Intenta reparar la instalacion vía Herramientas -> Reparar.");
 				this.MainProgressBar.Text = string.Empty;
 
 				SetLauncherMode(ELauncherMode.Repair, false);
@@ -589,23 +590,23 @@ namespace Launchpad.Launcher.Interface
 		{
 			Application.Invoke((o, args) =>
 			{
-				this.StatusLabel.Text = LocalizationCatalog.GetString("Idle");
+				this.StatusLabel.Text = LocalizationCatalog.GetString("En espera");
 
 				switch (this.Mode)
 				{
 					case ELauncherMode.Install:
 					{
-						this.MainProgressBar.Text = LocalizationCatalog.GetString("Installation finished");
+						this.MainProgressBar.Text = LocalizationCatalog.GetString("Instalación finalizada");
 						break;
 					}
 					case ELauncherMode.Update:
 					{
-						this.MainProgressBar.Text = LocalizationCatalog.GetString("Update finished");
+						this.MainProgressBar.Text = LocalizationCatalog.GetString("Actualización finalizada");
 						break;
 					}
 					case ELauncherMode.Repair:
 					{
-						this.MainProgressBar.Text = LocalizationCatalog.GetString("Repair finished");
+						this.MainProgressBar.Text = LocalizationCatalog.GetString("Reparación finalizada");
 						break;
 					}
 					default:
@@ -637,8 +638,8 @@ namespace Launchpad.Launcher.Interface
 						ButtonsType.YesNo,
 						LocalizationCatalog.GetString
 						(
-							"Whoops! The game appears to have crashed.\n" +
-							"Would you like the launcher to verify the installation?"
+							"Oops! El juego ha crasheado.\n" +
+							"Desearías que el launcher verificara la instalación?"
 						)
 					))
 					{
@@ -673,8 +674,8 @@ namespace Launchpad.Launcher.Interface
 				ButtonsType.YesNo,
 				LocalizationCatalog.GetString
 				(
-					"Reinstalling the game will delete all local files and download the entire game again.\n" +
-					"Are you sure you want to reinstall the game?"
+					"Reinstalar el juego borrará los archivos locales y descargará todo el juego nuevamente.\n" +
+					"Estás seguro que quieres reinstalar el juego?"
 				)
 			))
 			{
@@ -685,7 +686,7 @@ namespace Launchpad.Launcher.Interface
 				}
 			}
 		}
-
+		/*
 		private void OnLoginButtonClicked(object sender, EventArgs e)
 		{
 		}
@@ -693,5 +694,6 @@ namespace Launchpad.Launcher.Interface
 		private void OnLoginExitButtonClicked(object sender, EventArgs e)
 		{
 		}
+		*/
 	}
 }
