@@ -331,73 +331,73 @@ namespace Launchpad.Launcher.Interface
 			switch (newMode)
 			{
 				case ELauncherMode.Install:
-				{
-					if (isInProgress)
 					{
-						this.MainButton.Sensitive = false;
-						this.MainButton.Label = LocalizationCatalog.GetString("Instalando...");
+						if (isInProgress)
+						{
+							this.MainButton.Sensitive = false;
+							this.MainButton.Label = LocalizationCatalog.GetString("Instalando...");
+						}
+						else
+						{
+							this.MainButton.Sensitive = true;
+							this.MainButton.Label = LocalizationCatalog.GetString("Instalar");
+						}
+						break;
 					}
-					else
-					{
-						this.MainButton.Sensitive = true;
-						this.MainButton.Label = LocalizationCatalog.GetString("Instalar");
-					}
-					break;
-				}
 				case ELauncherMode.Update:
-				{
-					if (isInProgress)
 					{
-						this.MainButton.Sensitive = false;
-						this.MainButton.Label = LocalizationCatalog.GetString("Actualizando...");
+						if (isInProgress)
+						{
+							this.MainButton.Sensitive = false;
+							this.MainButton.Label = LocalizationCatalog.GetString("Actualizando...");
+						}
+						else
+						{
+							this.MainButton.Sensitive = true;
+							this.MainButton.Label = LocalizationCatalog.GetString("Actualizar");
+						}
+						break;
 					}
-					else
-					{
-						this.MainButton.Sensitive = true;
-						this.MainButton.Label = LocalizationCatalog.GetString("Actualizar");
-					}
-					break;
-				}
 				case ELauncherMode.Repair:
-				{
-					if (isInProgress)
 					{
-						this.MainButton.Sensitive = false;
-						this.MainButton.Label = LocalizationCatalog.GetString("Reparando...");
+						if (isInProgress)
+						{
+							this.MainButton.Sensitive = false;
+							this.MainButton.Label = LocalizationCatalog.GetString("Reparando...");
+						}
+						else
+						{
+							this.MainButton.Sensitive = true;
+							this.MainButton.Label = LocalizationCatalog.GetString("Reparar");
+						}
+						break;
 					}
-					else
-					{
-						this.MainButton.Sensitive = true;
-						this.MainButton.Label = LocalizationCatalog.GetString("Reparar");
-					}
-					break;
-				}
 				case ELauncherMode.Launch:
-				{
-					if (isInProgress)
 					{
-						this.MainButton.Sensitive = false;
-						this.MainButton.Label = LocalizationCatalog.GetString("Lanzando ADN Clip...");
+						if (isInProgress)
+						{
+							this.MainButton.Sensitive = false;
+							this.MainButton.Label = LocalizationCatalog.GetString("Lanzando ADN Clip...");
+						}
+						else
+						{
+							this.MainButton.Sensitive = true;
+							this.MainButton.Label = LocalizationCatalog.GetString("Comenzar");
+						}
+						break;
 					}
-					else
-					{
-						this.MainButton.Sensitive = true;
-						this.MainButton.Label = LocalizationCatalog.GetString("Comenzar");
-					}
-					break;
-				}
 				case ELauncherMode.Inactive:
-				{
-					this.MenuRepairItem.Sensitive = false;
+					{
+						this.MenuRepairItem.Sensitive = false;
 
-					this.MainButton.Sensitive = false;
-					this.MainButton.Label = LocalizationCatalog.GetString("Inactivo");
-					break;
-				}
+						this.MainButton.Sensitive = false;
+						this.MainButton.Label = LocalizationCatalog.GetString("Inactivo");
+						break;
+					}
 				default:
-				{
-					throw new ArgumentOutOfRangeException(nameof(newMode), "An invalid launcher mode was passed to SetLauncherMode.");
-				}
+					{
+						throw new ArgumentOutOfRangeException(nameof(newMode), "An invalid launcher mode was passed to SetLauncherMode.");
+					}
 			}
 
 			if (isInProgress)
@@ -419,10 +419,24 @@ namespace Launchpad.Launcher.Interface
 		/// <param name="e">E.</param>
 		private void OnMenuRepairItemActivated(object sender, EventArgs e)
 		{
-			SetLauncherMode(ELauncherMode.Repair, false);
+			//TODO: Enable Repair mode again
+			//SetLauncherMode(ELauncherMode.Repair, false);
 
 			// Simulate a button press from the user.
-			this.MainButton.Click();
+			//this.MainButton.Click();
+			using (var notAvailableDialog = new MessageDialog(
+			this,
+			DialogFlags.Modal,
+			MessageType.Warning,
+			ButtonsType.Ok,
+			LocalizationCatalog.GetString
+			(
+				"Esta opción se encuentra deshabilitada por el momento.\n" + "Si presenta algún problema, intente la opción Reinstalar.\n\n" + "Disculpe las molestias."
+			)
+			))
+			{
+				notAvailableDialog.Run();
+			}
 		}
 
 		/// <summary>

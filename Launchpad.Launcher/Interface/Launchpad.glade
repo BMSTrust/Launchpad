@@ -58,7 +58,7 @@
                 <property name="top-padding">20</property>
                 <property name="bottom-padding">20</property>
                 <child>
-                  <object class="GtkImage">
+                  <object class="GtkImage" id="LoginIcon">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <property name="icon-name">emblem-readonly</property>

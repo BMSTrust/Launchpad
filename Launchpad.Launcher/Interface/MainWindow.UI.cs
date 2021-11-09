@@ -55,6 +55,9 @@ namespace Launchpad.Launcher.Interface
 		[UIElement] private readonly Button MainButton;
 
 		[UIElement] private Dialog LoginDialog;
+		[UIElement] private Entry LoginUser;
+		[UIElement] private Entry LoginPassword;
+		[UIElement] private Image LoginIcon;
 
 		/*
 		[UIElement] private readonly Button LoginButton;
@@ -120,6 +123,10 @@ namespace Launchpad.Launcher.Interface
 					var loginButton = (Gtk.Button)builder.GetObject("Login");
 					loginButton.Clicked += OnLoginButtonClickedLogin;
 					this.LoginDialog.Destroyed += OnExitButtonClickedLogin;
+					this.LoginUser = (Gtk.Entry)builder.GetObject("LoginUser1");
+					this.LoginPassword = (Gtk.Entry)builder.GetObject("LoginPassword1");
+					this.LoginIcon = (Gtk.Image)builder.GetObject("LoginIcon");
+					this.LoginIcon.Icon = ResourceManager.ApplicationIcon;
 					this.LoginDialog.Run();
 				}
 			}
@@ -133,8 +140,32 @@ namespace Launchpad.Launcher.Interface
 		private void OnLoginButtonClickedLogin(object sender, EventArgs e)
 		{
 			// MANEJAR HTTP POST A LOGIN ACA
-			this.LoginDialog.Destroyed -= OnExitButtonClickedLogin;
-			this.LoginDialog.Hide();
+			if (this.LoginUser.Text.Equals("admin") && this.LoginPassword.Text.Equals("admin"))
+			{
+				this.LoginDialog.Destroyed -= OnExitButtonClickedLogin;
+				this.LoginDialog.Hide();
+			}
+			else
+			{
+				ShowLoginMessage("Usuario y/o contraseña incorrectos.\n\n" + "Intente nuevamente.");
+			}
+		}
+
+		private void ShowLoginMessage(string message)
+		{
+			using (var badLoginDialog = new MessageDialog(
+			this,
+			DialogFlags.Modal,
+			MessageType.Warning,
+			ButtonsType.Ok,
+			LocalizationCatalog.GetString
+			(
+				message
+			)
+			))
+			{
+				badLoginDialog.Run();
+			}
 		}
 
 		/// <summary>
