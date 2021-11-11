@@ -122,6 +122,10 @@ namespace Launchpad.Launcher.Interface
 			// Set the window title
 			this.Title = LocalizationCatalog.GetString("Launcher- {0}", this.Configuration.GameName);
 			this.StatusLabel.Text = LocalizationCatalog.GetString("En espera");
+			Gtk.Settings.Default.ApplicationPreferDarkTheme = true;
+			Gtk.CssProvider provider = new Gtk.CssProvider();
+			provider.LoadFromPath("style.css");
+			Gtk.StyleContext.AddProviderForScreen(Gdk.Screen.Default, provider, 800);
 		}
 
 		/// <summary>
@@ -156,7 +160,7 @@ namespace Launchpad.Launcher.Interface
 			else
 			{
 				// HERE WE PUT THE LOGIN SCREEN
-				CreateLogin();
+				// CreateLogin();
 				LoadBanner();
 
 				LoadChangelog();

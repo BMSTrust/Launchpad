@@ -1,0 +1,9 @@
+progress, trough 
+{
+    min-height: 30px;
+}
+
+GtkButton GtkLabel 
+{
+    font-size: 17;
+}
